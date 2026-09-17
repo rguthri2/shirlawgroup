@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=2" />
+<link rel="stylesheet" href="css/styles.css?v=3" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -87,24 +88,52 @@
         <div class="panel">
           <h2 class="mt-0">Send Us a Message</h2>
           <div class="form-success">Thank you! Your message has been sent — we'll be in touch shortly.</div>
-          <form data-demo-form>
+          <div class="form-error">Something went wrong sending your message. Please try again or call us directly.</div>
+          <form id="contactForm" action="contact-handler.php" method="post">
             <div class="grid grid-2" style="gap:0 20px;">
               <div class="form-field">
-                <label for="name">Your name</label>
-                <input id="name" type="text" required />
+                <label for="first_name">First name</label>
+                <input id="first_name" name="first_name" type="text" required />
               </div>
               <div class="form-field">
-                <label for="email">Your email</label>
-                <input id="email" type="email" required />
+                <label for="last_name">Last name</label>
+                <input id="last_name" name="last_name" type="text" required />
               </div>
+            </div>
+            <div class="grid grid-2" style="gap:0 20px;">
+              <div class="form-field">
+                <label for="email">Your email</label>
+                <input id="email" name="email" type="email" required />
+              </div>
+              <div class="form-field">
+                <label for="phone">Phone number <span style="font-weight:400;color:var(--ink-500);">(optional)</span></label>
+                <input id="phone" name="phone" type="tel" />
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="practice_area">Area of interest</label>
+              <select id="practice_area" name="practice_area" required>
+                <option value="" disabled selected>Select a practice area</option>
+                <option value="Civil Litigation">Civil Litigation</option>
+                <option value="Commercial Litigation">Commercial Litigation</option>
+                <option value="Condominium & Homeowners Association Representation & Litigation">Condominium &amp; Homeowners Association Representation &amp; Litigation</option>
+                <option value="General Business Representation">General Business Representation</option>
+                <option value="Medical Malpractice">Medical Malpractice</option>
+                <option value="Real Estate Litigation">Real Estate Litigation</option>
+                <option value="Personal Injury">Personal Injury</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
             <div class="form-field">
               <label for="subject">Subject</label>
-              <input id="subject" type="text" required />
+              <input id="subject" name="subject" type="text" required />
             </div>
             <div class="form-field">
               <label for="message">Your message (optional)</label>
-              <textarea id="message" rows="5"></textarea>
+              <textarea id="message" name="message" rows="5"></textarea>
+            </div>
+            <div class="form-field">
+              <div class="g-recaptcha" data-sitekey="6LcUe6ItAAAAAJahEJXao_1x-Rl9cqC_eQKQtgBG"></div>
             </div>
             <button type="submit" class="btn btn-navy btn-block">Submit</button>
             <p class="form-note">By submitting this form you agree to be contacted by Shir Law Group, P.A. regarding your inquiry. This does not create an attorney-client relationship.</p>
@@ -203,6 +232,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=2"></script>
+<script src="js/main.js?v=3"></script>
 </body>
 </html>

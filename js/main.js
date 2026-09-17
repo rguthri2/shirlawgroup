@@ -72,6 +72,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Main contact form: real submission to contact-handler.php (with reCAPTCHA)
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    const errorBox = contactForm.parentElement.querySelector('.form-error');
+    const successMsg = contactForm.parentElement.querySelector('.form-success');
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorBox?.classList.remove('show');
+      successMsg?.classList.remove('show');
+
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse().length === 0) {
+        if (errorBox) {
+          errorBox.textContent = 'Please complete the reCAPTCHA before submitting.';
+          errorBox.classList.add('show');
+        }
+        return;
+      }
+
+      const originalLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            successMsg?.classList.add('show');
+            contactForm.reset();
+            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+          } else {
+            if (errorBox) {
+              errorBox.textContent = data.message || 'Something went wrong sending your message. Please try again or call us directly.';
+              errorBox.classList.add('show');
+            }
+            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+          }
+        })
+        .catch(() => {
+          errorBox?.classList.add('show');
+          if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        });
+    });
+  }
+
   // Hero slider
   const slider = document.querySelector('.hero-slider');
   if (slider) {
