@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=4" />
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LfZccEtAAAAABrbRfJhgTGLCEO1P3nuH4cbGA3H"></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -89,7 +89,7 @@
           <h2 class="mt-0">Send Us a Message</h2>
           <div class="form-success">Thank you! Your message has been sent — we'll be in touch shortly.</div>
           <div class="form-error">Something went wrong sending your message. Please try again or call us directly.</div>
-          <form id="contactForm" action="contact-handler.php" method="post">
+          <form id="contactForm" action="contact-handler.php" method="post" data-recaptcha-sitekey="6LfZccEtAAAAABrbRfJhgTGLCEO1P3nuH4cbGA3H">
             <div class="grid grid-2" style="gap:0 20px;">
               <div class="form-field">
                 <label for="first_name">First name</label>
@@ -133,7 +133,8 @@
               <textarea id="message" name="message" rows="5"></textarea>
             </div>
             <div class="form-field">
-              <div class="g-recaptcha" data-sitekey="6LfZccEtAAAAABrbRfJhgTGLCEO1P3nuH4cbGA3H"></div>
+              <input type="hidden" name="g-recaptcha-response" id="recaptchaResponse" />
+              <p class="form-note" style="margin:0;">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
             </div>
             <button type="submit" class="btn btn-navy btn-block">Submit</button>
             <p class="form-note">By submitting this form you agree to be contacted by Shir Law Group, P.A. regarding your inquiry. This does not create an attorney-client relationship.</p>
