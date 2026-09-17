@@ -44,15 +44,14 @@ if ($recaptchaResponse === '') {
     respond(false, 'Please complete the reCAPTCHA.');
 }
 
-// Verify reCAPTCHA v3 with Google (checks token validity, score, and action)
+// Verify reCAPTCHA v2 with Google
 $verify = file_get_contents('https://www.google.com/recaptcha/api/siteverify?' . http_build_query([
     'secret'   => RECAPTCHA_SECRET_KEY,
     'response' => $recaptchaResponse,
     'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
 ]));
 $result = json_decode($verify, true);
-$score = $result['score'] ?? 0;
-if (empty($result['success']) || $score < 0.5) {
+if (empty($result['success'])) {
     respond(false, 'reCAPTCHA verification failed. Please try again.');
 }
 

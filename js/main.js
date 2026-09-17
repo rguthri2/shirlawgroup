@@ -72,16 +72,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Main contact form: real submission to contact-handler.php (reCAPTCHA v3, invisible)
+  // Main contact form: real submission to contact-handler.php (reCAPTCHA v2 checkbox)
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     const errorBox = contactForm.parentElement.querySelector('.form-error');
     const successMsg = contactForm.parentElement.querySelector('.form-success');
     const submitBtn = contactForm.querySelector('button[type="submit"]');
-    const recaptchaSiteKey = contactForm.dataset.recaptchaSitekey;
-    const recaptchaField = document.getElementById('recaptchaResponse');
 
-    const submitForm = () => {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorBox?.classList.remove('show');
+      successMsg?.classList.remove('show');
+
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.getResponse().length === 0) {
+        if (errorBox) {
+          errorBox.textContent = 'Please complete the reCAPTCHA before submitting.';
+          errorBox.classList.add('show');
+        }
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
       fetch(contactForm.action, {
         method: 'POST',
         body: new FormData(contactForm),
@@ -96,31 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
             errorBox.textContent = data.message || 'Something went wrong sending your message. Please try again or call us directly.';
             errorBox.classList.add('show');
           }
+          if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
         })
-        .catch(() => errorBox?.classList.add('show'))
+        .catch(() => {
+          errorBox?.classList.add('show');
+          if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+        })
         .finally(() => {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Submit';
         });
-    };
-
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      errorBox?.classList.remove('show');
-      successMsg?.classList.remove('show');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-
-      if (typeof grecaptcha !== 'undefined' && recaptchaSiteKey) {
-        grecaptcha.ready(() => {
-          grecaptcha.execute(recaptchaSiteKey, { action: 'contact' }).then((token) => {
-            recaptchaField.value = token;
-            submitForm();
-          });
-        });
-      } else {
-        submitForm();
-      }
     });
   }
 
