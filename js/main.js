@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dropdown toggle on mobile (tap to expand)
   document.querySelectorAll('.has-dropdown > .nav-link').forEach((link) => {
     link.addEventListener('click', (e) => {
-      if (window.innerWidth <= 900) {
+      if (window.innerWidth <= 1220) {
         e.preventDefault();
         link.parentElement.classList.toggle('open');
       }
